@@ -1,7 +1,6 @@
 package com.upchiapas.kt_template.jsonplaceholder.di
 
 import com.upchiapas.kt_template.jsonplaceholder.data.datasource.PostsApiService
-import com.upchiapas.kt_template.jsonplaceholder.data.datasource.PostsRemoteDataSource
 import com.upchiapas.kt_template.jsonplaceholder.data.repository.PostsRepository
 import com.upchiapas.kt_template.jsonplaceholder.data.repository.PostsRepositoryImpl
 import com.upchiapas.kt_template.jsonplaceholder.presentation.viewmodels.PostsViewModelFactory
@@ -23,12 +22,8 @@ class JsonPlaceholderModule {
         retrofit.create(PostsApiService::class.java)
     }
 
-    private val remoteDataSource: PostsRemoteDataSource by lazy {
-        PostsRemoteDataSource(apiService)
-    }
-
     val repository: PostsRepository by lazy {
-        PostsRepositoryImpl(remoteDataSource)
+        PostsRepositoryImpl(apiService)
     }
 
     val factoryPosts: PostsViewModelFactory by lazy {

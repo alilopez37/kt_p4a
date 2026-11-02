@@ -32,12 +32,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.upchiapas.kt_template.KtApplication
-import com.upchiapas.kt_template.jsonplaceholder.data.model.Post
 import com.upchiapas.kt_template.jsonplaceholder.presentation.components.CreatePostDialog
 import com.upchiapas.kt_template.jsonplaceholder.presentation.components.PostItem
 import com.upchiapas.kt_template.jsonplaceholder.presentation.viewmodels.PostsViewModel
@@ -115,6 +113,7 @@ fun PostsContent(
                 uiState.isLoading -> {
                     CircularProgressIndicator()
                 }
+
                 uiState.errorMessage != null -> {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -131,6 +130,15 @@ fun PostsContent(
                         }
                     }
                 }
+
+                uiState.posts.isEmpty() -> {
+                    Text(
+                        text = "No hay publicaciones disponibles.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
@@ -156,21 +164,4 @@ fun PostsContent(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PostsContentPreview() {
-    val samplePosts = listOf(
-        Post(id = 1, userId = 1, title = "sunt aut facere", body = "quia et suscipit suscipit recusandae consequuntur expedita et cum"),
-        Post(id = 2, userId = 1, title = "qui est esse", body = "est rerum tempore vitae sequi sint nihil reprehenderit dolor beatae")
-    )
-    PostsContent(
-        uiState = PostsUiState(posts = samplePosts),
-        onRefresh = {},
-        onOpenCreateDialog = {},
-        onCloseCreateDialog = {},
-        onCreatePost = { _, _ -> },
-        onClearUserMessage = {}
-    )
 }
